@@ -202,9 +202,29 @@ max-height:170px;
 max-width:170px;
 }
 
+.corebosbos {
+	background: #03589b;
+	color: #ffb218;
+}
+.coreboscore {
+	background: #ffb218;
+	color: #fff;
+}
+.coreboscolororange {
+	color: #ffb218;
+}
+.coreboscolorblue {
+	color: #03589b;
+}
+.corebosbackorange {
+	background: #ffb218;
+}
+.corebosbackblue {
+	background: #03589b;
+}
 .navbar-cls-top .navbar-brand {
 	color: #fff;
-background: #C90000;
+background: #ffb218;
 width: 260px;
 text-align: center;
 height: 60px;
@@ -212,7 +232,7 @@ font-size: 30px;
 font-weight: 700;
 }
 .active-menu {
-    background-color:#C90000!important;
+    background-color:#ffb218!important;
 }
 
 .arrow {
@@ -307,7 +327,7 @@ font-weight: 700;
 }
 .navbar-cls-top .navbar-brand:hover {
 
-background: #C90000;
+background: #ffb218;
 color:#fff;
 
 }
