@@ -6,7 +6,7 @@ angular.module('coreBOSJSApp',
 		'coreBOSJSApp.controllers', 'coreBOSJSApp.services', 'jm.i18next', 'trNgGrid'])
 	.config([ '$routeProvider', function($routeProvider) {
 		$routeProvider.when('/module', {
-			templateUrl : 'partials/comics.html',
+			templateUrl : 'partials/module.html',
 			controller : 'moduleCtrl'
 		});
 		$routeProvider.when('/config', {

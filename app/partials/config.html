@@ -1,10 +1,10 @@
 <p>
-<label for="mvpublickey" class="col-md-3"  style="clear: left;">{{'Change language to'|i18next}}:</label>
+<label for="chglang" class="col-md-3"  style="clear: left;">{{'Change language to'|i18next}}:</label>
 <select 
 ng-model="currentLang"
 ngSelected="currentLang"
 ng-options="lng.name for lng in langs track by lng.code"
-ng-change="changeLanguage(currentLang);"></select><br>
+ng-change="changeLanguage(currentLang);" name="chglang" id="chglang"></select><br>
 </p>
 <p>
 <label for="mvpublickey" class="col-md-3" style="clear: left;">{{'coreBOS User' | i18next}}</label>
@@ -18,9 +18,6 @@ ng-change="changeLanguage(currentLang);"></select><br>
   <alert type="danger" ng-bind-html="'coreBOSAPIInvalidKeys' | i18next"></alert>
 </div>
 <span class="col-md-offset-3 col-md-9" style="clear: left;">{{'coreBOSKeyNotSaved' | i18next}}</span>
-<hr class="col-md-12" style="width:80%;text-align:center;clear: both;"/>
-<label class="col-md-5" style="clear: left;">{{'Disclaimer' | i18next}}</label>
-<span class="col-md-offset-1 col-md-10" style="clear: left;">{{'coreBOSJSDisclaimer' | i18next}}</span>
 <hr class="col-md-12" style="width:80%;text-align:center;clear: both;"/>
 <label class="col-md-5" style="clear: left;">{{'Promotion' | i18next}}</label>
 <span class="col-md-offset-1 col-md-10" style="clear: left;" ng-bind-html="'PromotionDescription' | i18next"></span>

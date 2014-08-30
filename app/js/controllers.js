@@ -22,7 +22,7 @@ angular.module('coreBOSJSApp.controllers', [])
 	$scope.menuitems = [ {
 		path: 'module',
 		faimg: 'fa-file-image-o',
-		title: 'Comics'
+		title: 'Module'
 	}, {
 		path: 'config',
 		faimg: 'fa-edit',
@@ -50,14 +50,14 @@ angular.module('coreBOSJSApp.controllers', [])
 	} else {
 		$scope.currentLang = $scope.langs[0];
 	}
-	$scope.mvpublickey = corebosAPIservice.getPublicKey();
-	$scope.mvprivatekey = corebosAPIservice.getPrivateKey();
+	$scope.mvpublickey = corebosAPIservice.getcoreBOSUser();
+	$scope.mvprivatekey = corebosAPIservice.getcoreBOSKey();
 	$scope.$watch("mvpublickey", function(newval, oldval){
-		corebosAPIservice.setPublicKey(newval);
+		corebosAPIservice.setcoreBOSUser(newval);
 		corebosAPIservice.setConfigured();
 	});
 	$scope.$watch("mvprivatekey", function(newval, oldval){
-		corebosAPIservice.setPrivateKey(newval);
+		corebosAPIservice.setcoreBOSKey(newval);
 		corebosAPIservice.setConfigured();
 	});
 	$scope.MarvelAPIConfigured = corebosAPIservice.isConfigured();

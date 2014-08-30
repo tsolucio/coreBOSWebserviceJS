@@ -9,7 +9,7 @@ angular.module('coreBOSJSApp.services', [])
 		var corebosAPIGateWay = Setup.corebosapi;
 		var coreBOSUser = Setup.corebosuser;
 		var coreBOSKey = Setup.corebosaccesskey;
-		var marvelHash = md5.createHash(marvelTS + marvelPrivateKey + marvelPublicKey);
+		var coreBOSHash = md5.createHash(coreBOSUser + coreBOSKey);
 		var apiConfigured = false;
 		
 		corebosAPI.setConfigured = function(newkey) {
@@ -19,17 +19,17 @@ angular.module('coreBOSJSApp.services', [])
 		corebosAPI.isConfigured = function(newkey) {
 			return apiConfigured;
 		}
-		corebosAPI.setPublicKey = function(newkey) {
-			marvelPublicKey = newkey;
+		corebosAPI.setcoreBOSUser = function(newkey) {
+			coreBOSUser = newkey;
 		}
-		corebosAPI.setPrivateKey = function(newkey) {
-			marvelPrivateKey = newkey;
+		corebosAPI.setcoreBOSKey = function(newkey) {
+			coreBOSKey = newkey;
 		}
-		corebosAPI.getPublicKey = function() {
-			return marvelPublicKey;
+		corebosAPI.getcoreBOSUser = function() {
+			return coreBOSUser;
 		}
-		corebosAPI.getPrivateKey = function() {
-			return marvelPrivateKey;
+		corebosAPI.getcoreBOSKey = function() {
+			return coreBOSKey;
 		}
 		corebosAPI.getMarvelInfo = function(info,offset,limit) {
 			var URL = corebosAPIGateWay + info + '?apikey='
