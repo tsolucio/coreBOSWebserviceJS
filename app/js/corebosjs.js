@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('coreBOSJSApp',
-	[ 'ngRoute', 'coreBOSJSApp.setup', 'ngSanitize', 'coreBOSJSApp.filters', 'coreBOSJSApp.services',
+	[ 'ngRoute', 'coreBOSJSApp.setup', 'ngSanitize', 'coreBOSJSApp.filters', 'coreBOSAPIservice',
 		'coreBOSJSApp.directives', 'coreBOSJSApp.controllers', 'angular-md5','ui.bootstrap',
-		'coreBOSJSApp.controllers', 'coreBOSJSApp.services', 'jm.i18next', 'trNgGrid', 'restangular'])
+		'jm.i18next', 'trNgGrid'])
 	.config([ '$routeProvider', function($routeProvider) {
 		$routeProvider.when('/module', {
 			templateUrl : 'partials/module.html',
@@ -28,17 +28,17 @@ angular.module('coreBOSJSApp',
 		defaultLoadingValue: '' // ng-i18next option, *NOT* directly supported by i18next
 	};
 	}])
-	.config(function($httpProvider) {
-		$httpProvider.interceptors.push('corebosAPIInterceptor');
-	})
-	.run(function ($rootScope, corebosAPIInvalidKeys, corebosAPIservice, $location) {
+	.run(function (Setup, $rootScope, corebosAPIKeys, coreBOSWSAPI, $location) {
 		$rootScope.$on('$routeChangeStart', function (ev, next, curr) {
 		  if (next.$$route) {
-			if (!corebosAPIservice.isConfigured() || corebosAPIInvalidKeys.hasInvalidKeys()) {
+			if (!coreBOSWSAPI.isConfigured() || corebosAPIKeys.hasInvalidKeys()) {
 				$location.path('/config')
 			}
 		  }
 		});
+		coreBOSWSAPI.setcoreBOSUser(Setup.corebosuser);
+		coreBOSWSAPI.setcoreBOSKey(Setup.corebosaccesskey);
+		coreBOSWSAPI.setURL(Setup.corebosapi);
 		/*
 		TrNgGrid.tableCssClass = "tr-ng-grid table table-bordered table-hover";
 	    TrNgGrid.cellCssClass = "tr-ng-cell";

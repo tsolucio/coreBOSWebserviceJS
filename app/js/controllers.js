@@ -33,7 +33,7 @@ angular.module('coreBOSJSApp.controllers', [])
 		return active;
 	};
 })
-.controller('configCtrl',function($scope, $i18next, $filter, corebosAPIservice, corebosAPIInvalidKeys) {
+.controller('configCtrl',function($scope, $i18next, $filter, coreBOSWSAPI, corebosAPIKeys) {
 	$scope.langs = [ {
 		name : i18n.t('English'),
 		code : 'en'
@@ -50,20 +50,25 @@ angular.module('coreBOSJSApp.controllers', [])
 	} else {
 		$scope.currentLang = $scope.langs[0];
 	}
-	$scope.mvpublickey = corebosAPIservice.getcoreBOSUser();
-	$scope.mvprivatekey = corebosAPIservice.getcoreBOSKey();
+	$scope.mvpublickey = coreBOSWSAPI.getcoreBOSUser();
+	$scope.mvprivatekey = coreBOSWSAPI.getcoreBOSKey();
 	$scope.$watch("mvpublickey", function(newval, oldval){
-		corebosAPIservice.setcoreBOSUser(newval);
-		corebosAPIservice.setConfigured();
+		coreBOSWSAPI.setcoreBOSUser(newval);
+		coreBOSWSAPI.setConfigured();
 	});
 	$scope.$watch("mvprivatekey", function(newval, oldval){
-		corebosAPIservice.setcoreBOSKey(newval);
-		corebosAPIservice.setConfigured();
+		coreBOSWSAPI.setcoreBOSKey(newval);
+		coreBOSWSAPI.setConfigured();
 	});
-	$scope.MarvelAPIConfigured = corebosAPIservice.isConfigured();
-	$scope.MarvelAPIKeys = corebosAPIInvalidKeys.hasInvalidKeys();
+	$scope.MarvelAPIConfigured = coreBOSWSAPI.isConfigured();
+	$scope.MarvelAPIKeys = corebosAPIKeys.hasInvalidKeys();
+	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
+		console.log('WE ARE IN!!! dl then',corebosAPIKeys.getSessionInfo());
+	},function() {
+		console.log('THEY wont let us IN!!! dl then',corebosAPIKeys.getSessionInfo());
+	});
 })
-.controller('moduleCtrl',function($scope, corebosAPIservice, $i18next) {
+.controller('moduleCtrl',function($scope, coreBOSWSAPI, $i18next) {
 	$scope.moduleList = [];
 	for (var i=1;i<10;i++) {
 		var rec = {
@@ -77,13 +82,13 @@ angular.module('coreBOSJSApp.controllers', [])
 	}
 //	$scope.myPageItemsCount = 0;
 //	$scope.myItemsTotalCount = 0;
-//	corebosAPIservice.getComics().success(function(response) {
+//	corebosWSAPI.getComics().success(function(response) {
 //		$scope.myPageItemsCount = response.data.count;
 //		$scope.myItemsTotalCount = response.data.total;
 //		$scope.moduleList = response.data.results;
 //	});
 //	$scope.onServerSideItemsRequested = function(currentPage, pageItems, filterBy, filterByFields, orderBy, orderByReverse) {
-//		corebosAPIservice.getComics(currentPage * pageItems, pageItems).success(function(response) {
+//		corebosWSAPI.getComics(currentPage * pageItems, pageItems).success(function(response) {
 //			$scope.myPageItemsCount = response.data.count;
 //			$scope.myItemsTotalCount = response.data.total;
 //			$scope.moduleList = response.data.results;
