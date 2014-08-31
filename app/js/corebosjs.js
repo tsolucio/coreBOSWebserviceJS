@@ -3,7 +3,7 @@
 angular.module('coreBOSJSApp',
 	[ 'ngRoute', 'coreBOSJSApp.setup', 'ngSanitize', 'coreBOSJSApp.filters', 'coreBOSJSApp.services',
 		'coreBOSJSApp.directives', 'coreBOSJSApp.controllers', 'angular-md5','ui.bootstrap',
-		'coreBOSJSApp.controllers', 'coreBOSJSApp.services', 'jm.i18next', 'trNgGrid'])
+		'coreBOSJSApp.controllers', 'coreBOSJSApp.services', 'jm.i18next', 'trNgGrid', 'restangular'])
 	.config([ '$routeProvider', function($routeProvider) {
 		$routeProvider.when('/module', {
 			templateUrl : 'partials/module.html',

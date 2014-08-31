@@ -4,7 +4,7 @@
 
 angular.module('coreBOSJSApp.services', [])
   .value('version', '0.1')
-  .factory('corebosAPIservice',function($http, Setup, md5) {
+  .factory('corebosAPIservice',function($http, Setup, md5, Restangular) {
 		var corebosAPI = {};
 		var corebosAPIGateWay = Setup.corebosapi;
 		var coreBOSUser = Setup.corebosuser;

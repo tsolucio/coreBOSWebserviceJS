@@ -20,6 +20,7 @@
     "jquery": "~2.1.1",
     "trNgGrid": "~3.0.3",
     "angular-ui-bootstrap": "~0.11.0",
-    "RWD-Table-Patterns": "~5.0.4"
+    "RWD-Table-Patterns": "~5.0.4",
+    "restangular": "~1.4.0"
   }
 }
