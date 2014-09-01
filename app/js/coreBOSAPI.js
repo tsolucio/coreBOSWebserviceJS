@@ -121,7 +121,7 @@ angular.module('coreBOSAPIservice', [])
 	
 				corebosAPI.setcoreBOSUser(username);
 				corebosAPI.setcoreBOSKey(accesskey);
-console.log('accesskey',username,_servicetoken,accesskey);
+
 				var postdata = {
 					'operation' : 'login',
 					'username'  : username,
@@ -130,30 +130,8 @@ console.log('accesskey',username,_servicetoken,accesskey);
 				return $http({
 					method : 'POST',
 					url : _serviceurl,
-					params: postdata
+					data: postdata
 				});
-
-				/*
-				jQuery.ajax({
-					url : this._serviceurl,
-					type: reqtype,
-					data: postdata,
-					// Pass reference to the client to use it inside callback function.
-					_wsclient : this, 
-					complete : function(res, status) {
-						var usethis = this._wsclient;
-						var resobj = usethis.toJSON(res.responseText);
-						var resflag = false;
-						if(usethis.hasError(resobj) == false) {
-							var result = resobj['result'];
-							usethis._sessionid  = result.sessionName;
-							usethis._userid = result.userId;
-							resflag = true;
-						}
-						usethis.__performCallback(callback, resflag);
-					}
-				});
-				*/
 			}); // end then doChallenge
 		};
 
@@ -190,15 +168,12 @@ console.log('accesskey',username,_servicetoken,accesskey);
 		'response': function(response) {
 			if (response.config.url.indexOf(corebosAPIKeys.getServiceURL())!=-1) {
 				corebosAPIKeys.setInvalidKeys(false);
-				console.log(response);
-				if (response.config.params != undefined && response.config.params.operation == 'login') {
-					console.log(response);
+				if (response.config.data != undefined && response.config.data.operation == 'login') {
 					if (response.data.success) {  // we have a successful login > we have to save the session
 						corebosAPIKeys.setSessionInfo({
-							_sessionid: response.data['sessionName'],
-							_userid: response.data['userId']
+							_sessionid: response.data.result.sessionName,
+							_userid: response.data.result.userId
 						});
-						console.log(corebosAPIKeys.getSessionInfo());
 					} else {  // unsuccessful login
 						response.status = 401;
 						response.statusText = response.data.error.code;
