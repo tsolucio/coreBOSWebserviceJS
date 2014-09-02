@@ -13,6 +13,10 @@ angular.module('coreBOSJSApp',
 			templateUrl : 'partials/config.html',
 			controller : 'configCtrl'
 		});
+		$routeProvider.when('/listtypes', {
+			templateUrl : 'partials/listtypes.html',
+			controller : 'listtypesCtrl'
+		});
 		$routeProvider.otherwise({
 			redirectTo : '/module'
 		});

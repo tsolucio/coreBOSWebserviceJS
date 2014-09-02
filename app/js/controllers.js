@@ -24,6 +24,10 @@ angular.module('coreBOSJSApp.controllers', [])
 		faimg: 'fa-file-image-o',
 		title: 'Module'
 	}, {
+		path: 'listtypes',
+		faimg: 'fa-list',
+		title: 'List Types'
+	}, {
 		path: 'config',
 		faimg: 'fa-edit',
 		title: 'Settings'
@@ -95,5 +99,14 @@ angular.module('coreBOSJSApp.controllers', [])
 //	$scope.$watch("mySelectedItems.length", function(newLength){
 //	  console.log($scope.mySelectedItems);
 //	});
+})
+.controller('listtypesCtrl',function($scope, $i18next, coreBOSWSAPI, corebosAPIKeys) {
+	$scope.listtypes = [];
+	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
+		coreBOSWSAPI.doListTypes('select * from accounts limit 0,5').then(function(response) {
+			$scope.listtypes = response.data.result;
+			console.log(response);
+		})
+	});
 })
 ;

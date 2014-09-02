@@ -214,6 +214,21 @@ angular.module('coreBOSAPIservice', [])
 			return columns;
 		};
 
+		/**
+		 * List types (modules) available.
+		 */
+		corebosAPI.doListTypes = function() {
+			var getdata = {
+				'operation'    : 'listtypes',
+				'sessionName'  : corebosAPIKeys.getSessionInfo()._sessionid
+			};
+			return $http({
+				method : 'GET',
+				url : _serviceurl,
+				params: getdata
+			});
+		};
+
 		return corebosAPI;
 	}
 )
