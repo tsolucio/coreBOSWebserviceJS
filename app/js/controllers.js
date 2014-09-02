@@ -62,38 +62,35 @@ angular.module('coreBOSJSApp.controllers', [])
 	});
 	$scope.MarvelAPIConfigured = coreBOSWSAPI.isConfigured();
 	$scope.MarvelAPIKeys = corebosAPIKeys.hasInvalidKeys();
+})
+.controller('moduleCtrl',function($scope, $i18next, coreBOSWSAPI, corebosAPIKeys) {
+	$scope.myPageItemsCount = 0;
+	$scope.myItemsTotalCount = 0;
+	$scope.moduleList = [];
 	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
-		console.log('WE ARE IN!!! dl then',corebosAPIKeys.getSessionInfo());
+		coreBOSWSAPI.doQuery('select * from accounts limit 0,5').then(function(response) {
+			$scope.moduleList = response.data.result;
+			$scope.myPageItemsCount = response.data.result.length;
+		});
+		coreBOSWSAPI.doQuery('select count(*) from accounts').then(function(response) {
+			$scope.myItemsTotalCount = response.data.result[0].count;
+		});
 	},function() {
 		console.log('THEY wont let us IN!!! dl then',corebosAPIKeys.getSessionInfo());
 	});
-})
-.controller('moduleCtrl',function($scope, coreBOSWSAPI, $i18next) {
-	$scope.moduleList = [];
-	for (var i=1;i<10;i++) {
-		var rec = {
-				id: i,
-				name: 'mod' + i,
-				website: 'www' + i,
-				phone: 'phone' + i,
-				email: 'email' + i
-		};
-		$scope.moduleList.push(rec);
+	$scope.onServerSideItemsRequested = function(currentPage, pageItems, filterBy, filterByFields, orderBy, orderByReverse) {
+		var where = coreBOSWSAPI.getWhereCondition($scope.moduleList[0],filterBy, filterByFields, orderBy, orderByReverse);
+		var limit = coreBOSWSAPI.getLimit(pageItems,currentPage*pageItems);
+		var query = 'select * from accounts ' + where + limit;
+		coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
+		coreBOSWSAPI.doQuery(query).then(function(response) {
+			$scope.moduleList = response.data.result;
+			$scope.myPageItemsCount = response.data.result.length;
+		});
+		coreBOSWSAPI.doQuery('select count(*) from accounts' + where).then(function(response) {
+			$scope.myItemsTotalCount = response.data.result[0].count;
+		});});
 	}
-//	$scope.myPageItemsCount = 0;
-//	$scope.myItemsTotalCount = 0;
-//	corebosWSAPI.getComics().success(function(response) {
-//		$scope.myPageItemsCount = response.data.count;
-//		$scope.myItemsTotalCount = response.data.total;
-//		$scope.moduleList = response.data.results;
-//	});
-//	$scope.onServerSideItemsRequested = function(currentPage, pageItems, filterBy, filterByFields, orderBy, orderByReverse) {
-//		corebosWSAPI.getComics(currentPage * pageItems, pageItems).success(function(response) {
-//			$scope.myPageItemsCount = response.data.count;
-//			$scope.myItemsTotalCount = response.data.total;
-//			$scope.moduleList = response.data.results;
-//		});
-//	}
 //	$scope.mySelectedItems = [];
 //	$scope.$watch("mySelectedItems.length", function(newLength){
 //	  console.log($scope.mySelectedItems);

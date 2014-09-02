@@ -17,16 +17,6 @@ angular.module('coreBOSAPIservice', [])
 		var _expiretime = false;
 		var _servicetoken=false;
 
-		// Webservice login credentials
-		var _sessionid  = false;
-		var _userid     = false;
-		$rootScope.$watch('corebosAPIKeys.getSessionInfo', function (sessioninfo) {  // this changes on correct doLogin
-			if (sessioninfo != undefined) {
-				_sessionid  = sessioninfo._sessionid;
-				_userid     = sessioninfo._userid;
-			}
-		});
-
 		var corebosAPI = {};
 		var apiConfigured = false;
 		
@@ -71,6 +61,10 @@ angular.module('coreBOSAPIservice', [])
 		
 		// Last operation error information
 		var _lasterror  = false;
+		
+		corebosAPI.getlasterror = function() {
+			return corebosAPI._lasterror;
+		}
 		// Check if result has any error.
 		corebosAPI.hasError = function(resultdata) {
 			if (resultdata != null && resultdata['success'] == false) {
@@ -133,6 +127,91 @@ angular.module('coreBOSAPIservice', [])
 					data: postdata
 				});
 			}); // end then doChallenge
+		};
+
+		/**
+		 * Get actual record id from the response id.
+		 */
+		corebosAPI.getRecordId = function(id) {
+			if (typeof id === 'undefined') return 0;
+			var ids = id.split('x');
+			return ids[1];
+		};
+
+		/**
+		 * Do Query Operation.
+		 */
+		corebosAPI.doQuery = function(query) {
+			if(query.indexOf(';') == -1) query += ';';
+
+			var reqtype = 'GET';
+			var getdata = {
+				'operation'    : 'query',
+				'sessionName'  : corebosAPIKeys.getSessionInfo()._sessionid,
+				'query'        : query
+			};
+			return $http({
+				method : 'GET',
+				url : _serviceurl,
+				params: getdata
+			});
+		};
+
+		corebosAPI.getWhereCondition = function(firstrow, filterBy, filterByFields, orderBy, orderByReverse, glue) {
+			var where = '';
+			if (angular.isUndefined(glue) || glue == '') glue = ' and ';
+			if (filterBy != null ) {
+				var row = [];
+				row.push(firstrow);
+				var search_cols = coreBOSWSAPI.getResultColumns(row);
+				angular.forEach(search_cols, function(value, key) {
+					if (where != '') {
+						where = where + glue;
+					} else {
+						where = ' where ';
+					}
+					where = where + value + " like '%" + filterBy + "%' ";
+				});
+			}
+			if (where == '' && !angular.equals({}, filterByFields)) {
+				angular.forEach(filterByFields, function(value, key) {
+					if (where != '') {
+						where = where + glue;
+					} else {
+						where = ' where ';
+					}
+					where = where + key + " like '%" + value + "%' ";
+				});
+			}
+			if (orderBy != null) {
+				where = where + ' order by ' + orderBy + ' ';
+				if (orderByReverse) {
+					where = where + ' desc ';
+				}
+			}
+			return where;
+		}
+
+		corebosAPI.getLimit = function(limit,offset) {
+			var limit_cond = '';
+			if (angular.isNumber(limit)) {
+				if (!angular.isNumber(offset)) offset = '0';
+				limit_cond = ' limit '+ offset + ',' + limit + ' ';
+			}
+			return limit_cond;
+		}
+
+		/**
+		 * Get Result Column Names.
+		 */
+		corebosAPI.getResultColumns = function(result) {
+			var columns = [];
+			if(result != null && result.length != 0) {
+				angular.forEach(result[0], function(value, key) {
+					columns.push(key);
+				});
+			}
+			return columns;
 		};
 
 		return corebosAPI;
