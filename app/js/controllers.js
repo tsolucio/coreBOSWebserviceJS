@@ -103,10 +103,24 @@ angular.module('coreBOSJSApp.controllers', [])
 .controller('listtypesCtrl',function($scope, $i18next, coreBOSWSAPI, corebosAPIKeys) {
 	$scope.listtypes = [];
 	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
-		coreBOSWSAPI.doListTypes('select * from accounts limit 0,5').then(function(response) {
+		coreBOSWSAPI.doListTypes().then(function(response) {
 			$scope.listtypes = response.data.result;
-			console.log(response);
+			var ltypes = coreBOSWSAPI.processListTypes(response.data.result.information, false, true);
+			$scope.selecttypes = ltypes;
 		})
 	});
+	$scope.changeModule = function() {
+		coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
+			coreBOSWSAPI.doDescribe($scope.selmtypes).then(function(response) {
+				console.log(response);
+				$scope.idPrefix = response.data.result.idPrefix;
+				$scope.createable = response.data.result.createable;
+				$scope.updateable = response.data.result.updateable;
+				$scope.deleteable = response.data.result.deleteable;
+				$scope.retrieveable = response.data.result.retrieveable;
+				$scope.modulefields = response.data.result.fields;
+			})
+		});
+	}
 })
 ;

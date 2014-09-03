@@ -229,6 +229,57 @@ angular.module('coreBOSAPIservice', [])
 			});
 		};
 
+		/**
+		 * Process List types (modules).
+		 * @param ListType.Information object returned from doListTypes call
+		 * @param OnlyEntities boolean true if only Entity modules are to be returned
+		 * @param SortResult boolean true if the result should be sorted by label
+		 * @returns array of json objects with name of module and it's label
+		 * can be used in a "select" like this:
+		 * <select ng-model="selmtypes" ng-options="value.name as value.label for value in selecttypes"></select>
+		 */
+		corebosAPI.processListTypes = function(ListTypeInformation,OnlyEntities,SortResult) {
+			if (angular.isUndefined(OnlyEntities) || OnlyEntities == '') OnlyEntities = false;
+			if (angular.isUndefined(SortResult) || SortResult == '') SortResult = false;
+			var ltypes = [];
+			if(ListTypeInformation != null && !angular.equals({}, ListTypeInformation)) {
+				angular.forEach(ListTypeInformation, function(value, key) {
+					var option = {};
+					if (OnlyEntities) {
+						if (value.isEntity) {
+							option.name = key;
+							option.label = value.label;
+							ltypes.push(option);
+						}
+					} else {
+						option.name = key;
+						option.label = value.label;
+						ltypes.push(option);
+					}
+				});
+			}
+			if (SortResult) {
+				ltypes.sort(function(a, b) {return a.label.localeCompare(b.label);})
+			}
+			return ltypes;
+		};
+
+		/**
+		 * Do Describe Operation
+		 */
+		corebosAPI.doDescribe = function(module) {
+			var getdata = {
+				'operation'    : 'describe',
+				'sessionName'  : corebosAPIKeys.getSessionInfo()._sessionid,
+				'elementType'  : module
+			};
+			return $http({
+				method : 'GET',
+				url : _serviceurl,
+				params: getdata
+			});
+		};
+
 		return corebosAPI;
 	}
 )

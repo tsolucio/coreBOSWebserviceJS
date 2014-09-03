@@ -1,22 +1,27 @@
 <h2>List Types</h2>
-{{listtypes}}
+<select ng-model="selmtypes" ng-options="value.name as value.label for value in selecttypes" ng-change="changeModule()" style="margin-bottom: 6px;">
+<option value="" ng-hide="selmtypes">Searching...</option>
+</select>
 <div class="table-responsive">
-	<table tr-ng-grid="" items="listtypes" page-items="5" selected-items="mySelectedItems" selection-mode="MultiRow"
-	 page-items="myPageItemsCount" total-items="myItemsTotalCount" 
-	 class="table table-striped table-bordered table-hover"
-	 on-data-required="onServerSideItemsRequested(currentPage, pageItems, filterBy, filterByFields, orderBy, orderByReverse)">
+	<table class='table table-striped small table-condensed' style="margin-bottom: 6px;border-bottom: solid;">
+		<tr><th>REST ID</th><th>Can Create</th><th>Can Update</th><th>Can Delete</th><th>Can Retrieve</th></tr>
+		<tr>
+			<td nowrap='nowrap'>{{idPrefix}}x</td>
+			<td nowrap='nowrap'>{{createable}}</td>
+			<td nowrap='nowrap'>{{updateable}}</td>
+			<td nowrap='nowrap'>{{deleteable}}</td>
+			<td nowrap='nowrap'>{{retrieveable}}</td>
+		</tr>
+	</table>
+	<table tr-ng-grid="" items="modulefields" class="table table-striped table-bordered table-hover small table-condensed">
 		<thead>
 			<tr>
-				<th field-name="accountname" display-name="{{'Name' | i18next}}" display-align="center"></th>
-				<th field-name="website" display-name="{{'website' | i18next}}"></th>
-				<th field-name="phone" display-name="{{'phone' | i18next}}"></th>
-				<th field-name="email1" display-name="{{'email' | i18next}}"></th>
+				<th field-name="label" display-name="{{'Field' | i18next}}" display-align="center" display-format="formatNameInfo"></th>
+				<th field-name="name" display-name="{{'Information' | i18next}}" display-format="formatFieldInfo"></th>
+				<th field-name="block" display-name="{{'Block' | i18next}}" display-format="formatBlockInfo"></th>
+				<th field-name="type" display-name="{{'Type' | i18next}}" display-format="formatTypeInfo"></th>
+				<th field-name="uitype" display-name="{{'Reference/Values' | i18next}}" style="width:30%" display-format="formatReferenceInfo"></th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr>
-				<td field-name="name"><a href='#/module/{{gridItem.id}}'>{{gridItem.name}}</a></td>
-			</tr>
-		</tbody>
 	</table>
 </div>
