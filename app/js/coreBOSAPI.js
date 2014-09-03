@@ -280,6 +280,22 @@ angular.module('coreBOSAPIservice', [])
 			});
 		};
 
+		/**
+		 * Retrieve details of record
+		 */
+		corebosAPI.doRetrieve = function(record) {
+			var getdata = {
+				'operation'    : 'retrieve',
+				'sessionName'  : corebosAPIKeys.getSessionInfo()._sessionid,
+				'id'           : record
+			};
+			return $http({
+				method : 'GET',
+				url : _serviceurl,
+				params: getdata
+			});
+		};
+
 		return corebosAPI;
 	}
 )

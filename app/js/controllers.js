@@ -112,7 +112,6 @@ angular.module('coreBOSJSApp.controllers', [])
 	$scope.changeModule = function() {
 		coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
 			coreBOSWSAPI.doDescribe($scope.selmtypes).then(function(response) {
-				console.log(response);
 				$scope.idPrefix = response.data.result.idPrefix;
 				$scope.createable = response.data.result.createable;
 				$scope.updateable = response.data.result.updateable;
@@ -122,5 +121,20 @@ angular.module('coreBOSJSApp.controllers', [])
 			})
 		});
 	}
+})
+.controller('moduleviewCtrl',function($scope, $i18next, $routeParams, coreBOSWSAPI, corebosAPIKeys) {
+	$scope.modulefieldList = [{field:'',val:''}];
+	$scope.recordid = $routeParams.id;
+	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
+		coreBOSWSAPI.doRetrieve($routeParams.id).then(function(response) {
+			var flds = [];
+			angular.forEach(response.data.result, function(value, key) {
+				var fld = {field:key,val:value};
+				flds.push(fld);
+			});
+			$scope.modulefieldList = flds;
+		})
+	});
+
 })
 ;

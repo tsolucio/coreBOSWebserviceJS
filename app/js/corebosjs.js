@@ -5,6 +5,10 @@ angular.module('coreBOSJSApp',
 		'coreBOSJSApp.directives', 'coreBOSJSApp.controllers', 'angular-md5','ui.bootstrap',
 		'jm.i18next', 'trNgGrid'])
 	.config([ '$routeProvider', function($routeProvider) {
+		$routeProvider.when('/module/:id', {
+			templateUrl : 'partials/moduleview.html',
+			controller : 'moduleviewCtrl'
+		});
 		$routeProvider.when('/module', {
 			templateUrl : 'partials/module.html',
 			controller : 'moduleCtrl'
