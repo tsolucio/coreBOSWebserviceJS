@@ -296,6 +296,33 @@ angular.module('coreBOSAPIservice', [])
 			});
 		};
 
+		/**
+		 * Invoke custom operation
+		 */
+		corebosAPI.doInvoke = function(method, params, type) {
+			if(typeof(params) == 'undefined') params = {};
+			if (angular.isString(params)) params = JSON.parse(params);
+			var reqtype = 'POST';
+			if(typeof(type) != 'undefined') reqtype = type.toUpperCase();
+
+			var senddata = {
+				'operation' : method,
+				'sessionName' : corebosAPIKeys.getSessionInfo()._sessionid
+			};
+			senddata = angular.extend(senddata,params);
+			if (reqtype=='POST') {
+				var http_method = { data: senddata};
+			} else {
+				var http_method = { params: senddata};
+			}
+			var invokecall = {
+				method : reqtype,
+				url : _serviceurl,
+			};
+			var invokecall = angular.extend(invokecall,http_method);
+			return $http(invokecall);
+		};
+
 		return corebosAPI;
 	}
 )

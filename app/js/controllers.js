@@ -28,6 +28,10 @@ angular.module('coreBOSJSApp.controllers', [])
 		faimg: 'fa-list',
 		title: 'List Types'
 	}, {
+		path: 'invoke',
+		faimg: 'fa-phone',
+		title: 'Invoke'
+	}, {
 		path: 'config',
 		faimg: 'fa-edit',
 		title: 'Settings'
@@ -134,6 +138,56 @@ angular.module('coreBOSJSApp.controllers', [])
 			});
 			$scope.modulefieldList = flds;
 		})
+	});
+})
+.controller('doinvokeCtrl',function($scope, $i18next, $filter, coreBOSWSAPI, corebosAPIKeys) {
+	$scope.invokemethod = '';
+	$scope.invokeparams = '{}';
+	$scope.invokeexamples = ['authenticateContact','getPortalUserInfo','gettranslation','getSearchResults'];
+	$scope.loadInvokeExample = function() {
+		switch($scope.invokeej) {
+		case 'authenticateContact':
+			$scope.invokemethod = 'authenticateContact';
+			$scope.invokeparams = '{ "email": "mary_smith@company.com","password": "j531iuze" }';
+			$scope.invokeformat = 'GET';
+			break;
+		case 'getPortalUserInfo':
+			$scope.invokemethod = 'getPortalUserInfo';
+			$scope.invokeparams = '{}';
+			$scope.invokeformat = 'POST';
+			break;
+		case 'gettranslation':
+			$scope.invokemethod = 'gettranslation';
+			//{\"Accounts\":\"Accounts\",\"LBL_LIST_ACCOUNT_NAME\":\"LBL_LIST_ACCOUNT_NAME\",\"Portal User\":\"Client Portal User\"}
+			var p = {
+				"language": "es_es",
+				"module": "Contacts",
+				"totranslate": "{\"Accounts\":\"Accounts\",\"LBL_LIST_ACCOUNT_NAME\":\"LBL_LIST_ACCOUNT_NAME\",\"Portal User\":\"Client Portal User\"}"
+			};
+			$scope.invokeparams = $filter('json')(p);
+			$scope.invokeformat = 'POST';
+			break;
+		case 'getSearchResults':
+			$scope.invokemethod = 'getSearchResults';
+			var p = {
+				query: "mary",
+				search_onlyin: "",
+				restrictionids: '{"userId": "19x1", "accountId": "11x4", "contactId": "12x30"}'
+			};
+			$scope.invokeparams = $filter('json')(p);
+			$scope.invokeformat = 'POST';
+			break;
+		}
+	};
+	$scope.sendInvokeCall = function() {
+		coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
+			coreBOSWSAPI.doInvoke($scope.invokemethod,$scope.invokeparams,$scope.invokeformat).then(function(response) {
+				$scope.invokeresult = response.data;
+			});
+		});
+	}
+	$scope.invokeresult = '';
+	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
 	});
 
 })

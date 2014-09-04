@@ -13,13 +13,17 @@ angular.module('coreBOSJSApp',
 			templateUrl : 'partials/module.html',
 			controller : 'moduleCtrl'
 		});
-		$routeProvider.when('/config', {
-			templateUrl : 'partials/config.html',
-			controller : 'configCtrl'
+		$routeProvider.when('/invoke', {
+			templateUrl : 'partials/doinvoke.html',
+			controller : 'doinvokeCtrl'
 		});
 		$routeProvider.when('/listtypes', {
 			templateUrl : 'partials/listtypes.html',
 			controller : 'listtypesCtrl'
+		});
+		$routeProvider.when('/config', {
+			templateUrl : 'partials/config.html',
+			controller : 'configCtrl'
 		});
 		$routeProvider.otherwise({
 			redirectTo : '/module'

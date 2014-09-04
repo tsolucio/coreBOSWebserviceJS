@@ -94,21 +94,29 @@ font-size: 40px;
 border-radius: 50px;
 
 }
-    .bg-color-green {
+.bg-color-green {
 background-color: #00CE6F;
 color: #fff;
 }
- .bg-color-blue {
+.bg-color-blue {
 background-color: #A95DF0;
 color: #fff;
 }
-  .bg-color-red {
+.bg-color-red {
 background-color: #DB0630;
 color: #fff;
 }
-  .bg-color-brown {
+.bg-color-brown {
 background-color: #B94A00;
 color: #fff;
+}
+
+.css-form input.ng-invalid.ng-dirty {
+    background-color: #FA787E;
+  }
+
+.css-form input.ng-valid.ng-dirty {
+    background-color: #78FA89;
 }
 
  .icon-box-right {
