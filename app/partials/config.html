@@ -7,6 +7,8 @@ ng-options="lng.name for lng in langs track by lng.code"
 ng-change="changeLanguage(currentLang);" name="chglang" id="chglang"></select><br>
 </p>
 <p>
+<label for="mvurlkey" class="col-md-3" style="clear: left;">{{'coreBOS URL' | i18next}}</label>
+<input name="mvurlkey" id ="mvurlkey" type=text ng-model="mvurlkey" class="col-md-5">
 <label for="mvpublickey" class="col-md-3" style="clear: left;">{{'coreBOS User' | i18next}}</label>
 <input name="mvpublickey" id ="mvpublickey" type=text ng-model="mvpublickey" class="col-md-5">
 <label for="mvprivatekey" class="col-md-3" style="clear: left;">{{'coreBOS Access Key' | i18next}}</label>

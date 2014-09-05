@@ -58,11 +58,14 @@ angular.module('coreBOSJSApp.controllers', [])
 	} else {
 		$scope.currentLang = $scope.langs[0];
 	}
+	$scope.mvurlkey = coreBOSWSAPI.getURL();
 	$scope.mvpublickey = coreBOSWSAPI.getcoreBOSUser();
 	$scope.mvprivatekey = coreBOSWSAPI.getcoreBOSKey();
+	$scope.$watch("mvurlkey", function(newval, oldval){
+		coreBOSWSAPI.setURL(newval);
+	});
 	$scope.$watch("mvpublickey", function(newval, oldval){
 		coreBOSWSAPI.setcoreBOSUser(newval);
-		coreBOSWSAPI.setConfigured();
 	});
 	$scope.$watch("mvprivatekey", function(newval, oldval){
 		coreBOSWSAPI.setcoreBOSKey(newval);
