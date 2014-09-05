@@ -17,6 +17,10 @@ angular.module('coreBOSJSApp',
 			templateUrl : 'partials/doinvoke.html',
 			controller : 'doinvokeCtrl'
 		});
+		$routeProvider.when('/relations', {
+			templateUrl : 'partials/relations.html',
+			controller : 'relationsCtrl'
+		});
 		$routeProvider.when('/listtypes', {
 			templateUrl : 'partials/listtypes.html',
 			controller : 'listtypesCtrl'

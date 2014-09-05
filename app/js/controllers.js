@@ -24,6 +24,10 @@ angular.module('coreBOSJSApp.controllers', [])
 		faimg: 'fa-file-image-o',
 		title: 'Module'
 	}, {
+		path: 'relations',
+		faimg: 'fa-external-link-square',
+		title: 'Relations'
+	}, {
 		path: 'listtypes',
 		faimg: 'fa-list',
 		title: 'List Types'
@@ -143,6 +147,38 @@ angular.module('coreBOSJSApp.controllers', [])
 		})
 	});
 })
+.controller('relationsCtrl',function($scope, $i18next, coreBOSWSAPI, corebosAPIKeys) {
+	$scope.pdodiscriminator = [
+		'ProductBundle', 'ProductParent', 'ProductLineInvoice', 'ProductLineSalesOrder', 'ProductLineQuote',
+		'ProductLineInvoiceOnly', 'ProductLineSalesOrderOnly', 'ProductLineQuoteOnly', 'ProductLineAll', 'ProductLineNone'
+	];
+	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
+		coreBOSWSAPI.doListTypes().then(function(response) {
+			var ltypes = coreBOSWSAPI.processListTypes(response.data.result.information, false, true);
+			$scope.selecttypes = ltypes;
+		})
+	});
+	$scope.sendgrelCall = function() {
+		coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
+			var queryParameters = {};
+			if (!angular.isUndefined($scope.rpdodisc)) queryParameters.productDiscriminator = $scope.rpdodisc;
+			if (!angular.isUndefined($scope.glimit)) queryParameters.limit = $scope.glimit;
+			if (!angular.isUndefined($scope.groffset)) queryParameters.offset = $scope.groffset;
+			if (!angular.isUndefined($scope.gorder)) queryParameters.orderby = $scope.gorder;
+			if (!angular.isUndefined($scope.gcols)) queryParameters.columns = $scope.gcols;
+			coreBOSWSAPI.doGetRelatedRecords($scope.grelrecord,$scope.gparentmodule,$scope.grelmodule, queryParameters).then(function(response) {
+				$scope.grelresult = response.data;
+			});
+		});
+	};
+	$scope.sendsrelCall = function() {
+		coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
+			coreBOSWSAPI.doSetRelated($scope.srelrecord,$scope.srelwith).then(function(response) {
+				$scope.srelresult = response.data;
+			});
+		});
+	};
+})
 .controller('doinvokeCtrl',function($scope, $i18next, $filter, coreBOSWSAPI, corebosAPIKeys) {
 	$scope.invokemethod = '';
 	$scope.invokeparams = '{}';
@@ -192,6 +228,5 @@ angular.module('coreBOSJSApp.controllers', [])
 	$scope.invokeresult = '';
 	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
 	});
-
 })
 ;

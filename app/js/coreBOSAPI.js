@@ -2,7 +2,7 @@
 'use strict';
 angular.module('coreBOSAPIservice', [])
   .value('version', 'coreBOS2.1')
-  .factory('coreBOSWSAPI', function($http, md5, $rootScope, corebosAPIKeys) {
+  .factory('coreBOSWSAPI', function($http, md5, $filter, corebosAPIKeys) {
 
 		// Webservice access point
 		var _servicebase = 'webservice.php';
@@ -321,6 +321,46 @@ angular.module('coreBOSAPIservice', [])
 			};
 			var invokecall = angular.extend(invokecall,http_method);
 			return $http(invokecall);
+		};
+
+		/**
+		 * Retrieve related records.
+		 */
+		corebosAPI.doGetRelatedRecords = function(record, module, relatedModule, queryParameters) {
+			if (angular.isObject(queryParameters)) queryParameters = $filter('json')(queryParameters);
+			var senddata = {
+				'operation' : 'getRelatedRecords',
+				'sessionName' : corebosAPIKeys.getSessionInfo()._sessionid,
+				'id' : record,
+				'module' : module,
+				'relatedModule' : relatedModule,
+				'queryParameters' : queryParameters
+			};
+			return $http({
+				method : 'POST',
+				url : _serviceurl,
+				data: senddata
+			});
+		};
+
+		/**
+		 * Set relation between records.
+		 * param relate_this_id string ID of record we want to related other records with
+		 * param with_this_ids string/array either a string with one unique ID or an array of IDs to relate to the first parameter
+		 */
+		corebosAPI.doSetRelated = function(relate_this_id, with_these_ids) {
+			if (angular.isObject(with_these_ids)) with_these_ids = $filter('json')(with_these_ids);
+			var senddata = {
+				'operation' : 'SetRelation',
+				'sessionName' : corebosAPIKeys.getSessionInfo()._sessionid,
+				'relate_this_id' : relate_this_id,
+				'with_these_ids' : with_these_ids
+			};
+			return $http({
+				method : 'POST',
+				url : _serviceurl,
+				data: senddata
+			});
 		};
 
 		return corebosAPI;
