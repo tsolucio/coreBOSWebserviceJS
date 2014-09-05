@@ -13,28 +13,24 @@ angular.module('coreBOSJSApp.filters', [])
 			}
 		}
 		return null;
-	}
+	};
 })
 .filter("formatNameInfo", function() {
-	return function(name) {
-		var ninfo = '';
-		if (!angular.isUndefined(name)) {
-			ninfo = '<b>' + name.label + '<b><br>' + name.name;
-		}
-		return ninfo;
-	}
+	return function(label,name) {
+		return '<b>' + label + '<b><br>' + name;
+	};
 })
 .filter("formatFieldInfo", function() {
 	return function(field) {
 		var finfo = '';
 		if (!angular.isUndefined(field)) {
-			finfo = finfo + 'Mandatory: ' + (mandatory ? 'yes' : 'no') + '<br>';
-//			Null: {{gridItem.nullable ? 'yes' : 'no'}}<br>
-//			Editable: {{gridItem.editable ? 'yes' : 'no'}}
-//			{{angular.isUndefined(gridItem.sequence) ? '' : '<br>Sequence: ' + gridItem.sequence}}
+			finfo = finfo + 'Mandatory: ' + (field.mandatory ? 'yes' : 'no') + '<br>';
+			finfo = finfo + 'Null: ' + (field.nullable ? 'yes' : 'no') + '<br>';
+			finfo = finfo + 'Editable: ' + (field.editable ? 'yes' : 'no');
+			finfo = finfo + (angular.isUndefined(field.sequence) ? '' : '<br>Sequence: ' + field.sequence);
 		}
 		return finfo;
-	}
+	};
 })
 .filter("formatBlockInfo", function() {
 	return function(block) {
@@ -46,30 +42,54 @@ angular.module('coreBOSJSApp.filters', [])
 			binfo = binfo + 'Name: ' + block.blockname;
 		}
 		return binfo;
-	}
+	};
 })
 .filter("formatTypeInfo", function() {
-	return function(type) {
+	return function(field) {
 		var tinfo = '';
-		if (!angular.isUndefined(type)) {
-			tinfo = 'Type: ' + type.name;
-	//		tinfo = tinfo + (angular.isUndefined(gridItem.typeofdata) ? '' : '&nbsp;(' + gridItem.typeofdata + ')');
-	//		tinfo = tinfo + (angular.isUndefined(gridItem.uitype) ? '' : '<br>UIType: ' + gridItem.uitype);
-			tinfo = tinfo + (angular.isUndefined(type.format) ? '' : '<br>Format: ' + type.format);
-	//		tinfo = tinfo + (angular.isUndefined(gridItem.default) ? '' : '<br>Default: ' + gridItem.default);
+		if (!angular.isUndefined(field.type)) {
+			tinfo = 'Type: ' + field.type.name;
+			tinfo = tinfo + (angular.isUndefined(field.typeofdata) ? '' : '&nbsp;(' + field.typeofdata + ')');
+			tinfo = tinfo + (angular.isUndefined(field.uitype) ? '' : '<br>UIType: ' + field.uitype);
+			tinfo = tinfo + (angular.isUndefined(field.type.format) ? '' : '<br>Format: ' + field.type.format);
+			tinfo = tinfo + (angular.isUndefined(field['default']) ? '' : '<br>Default: ' + field['default']);
 		}
 		return tinfo;
-	}
+	};
 })
 .filter("formatReferenceInfo", function() {
 	return function(reference) {
 		var rinfo = '';
-		if (!angular.isUndefined(reference)) {
-			rinfo = rinfo + (angular.isUndefined(refersTo) ? '' : refersTo);
-			rinfo = rinfo + (angular.isUndefined(picklistValues) ? '' : picklistValues);
+		if (!angular.isUndefined(reference.refersTo)) {
+			angular.forEach(reference.refersTo, function (value, key) {
+				rinfo = rinfo + value + ', ';
+			});
+		}
+		if (!angular.isUndefined(reference.picklistValues)) {
+			angular.forEach(reference.picklistValues, function (value, key) {
+				rinfo = rinfo + value.label + ': ' + value.value + ', ';
+			});
+		}
+		return rinfo.substring(0, rinfo.length - 2);
+	};
+})
+.filter("formatModuleFields", function($filter) {
+	return function(mfields) {
+		var rinfo = [];
+		if (!angular.isUndefined(mfields)) {
+			angular.forEach(mfields, function(value, key) {
+				var finfo = {
+					labelinfo: $filter('formatNameInfo')(value.label,value.name),
+					fieldinfo: $filter('formatFieldInfo')(value),
+					blockinfo: $filter('formatBlockInfo')(value.block),
+					typeinfo: $filter('formatTypeInfo')(value),
+					refinfo: $filter('formatReferenceInfo')(value.type)
+				};
+				rinfo.push(finfo);
+			});
 		}
 		return rinfo;
-	}
+	};
 })
 .filter('interpolate', [ 'version', function(version) {
 	return function(text) {

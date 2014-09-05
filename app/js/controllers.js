@@ -58,11 +58,14 @@ angular.module('coreBOSJSApp.controllers', [])
 	} else {
 		$scope.currentLang = $scope.langs[0];
 	}
+	$scope.mvurlkey = coreBOSWSAPI.getURL();
 	$scope.mvpublickey = coreBOSWSAPI.getcoreBOSUser();
 	$scope.mvprivatekey = coreBOSWSAPI.getcoreBOSKey();
+	$scope.$watch("mvurlkey", function(newval, oldval){
+		coreBOSWSAPI.setURL(newval);
+	});
 	$scope.$watch("mvpublickey", function(newval, oldval){
 		coreBOSWSAPI.setcoreBOSUser(newval);
-		coreBOSWSAPI.setConfigured();
 	});
 	$scope.$watch("mvprivatekey", function(newval, oldval){
 		coreBOSWSAPI.setcoreBOSKey(newval);
@@ -104,7 +107,7 @@ angular.module('coreBOSJSApp.controllers', [])
 //	  console.log($scope.mySelectedItems);
 //	});
 })
-.controller('listtypesCtrl',function($scope, $i18next, coreBOSWSAPI, corebosAPIKeys) {
+.controller('listtypesCtrl',function($scope, $i18next, $filter, coreBOSWSAPI, corebosAPIKeys) {
 	$scope.listtypes = [];
 	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
 		coreBOSWSAPI.doListTypes().then(function(response) {
@@ -121,7 +124,7 @@ angular.module('coreBOSJSApp.controllers', [])
 				$scope.updateable = response.data.result.updateable;
 				$scope.deleteable = response.data.result.deleteable;
 				$scope.retrieveable = response.data.result.retrieveable;
-				$scope.modulefields = response.data.result.fields;
+				$scope.modulefields = $filter('formatModuleFields')(response.data.result.fields);
 			})
 		});
 	}

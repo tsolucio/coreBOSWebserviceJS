@@ -13,7 +13,7 @@ angular.module('coreBOSJSApp.setup', [])
 	language: 		'es',
 	
 	// app branding
-	app:			'coreBOSJS',
+	app:			'coreBOSwsJS',
 	version:		'1.0',
 	copy: 			'Made by Joe Bordes, JPL TSolucio, S.L.'
 	
