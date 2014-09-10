@@ -44,10 +44,10 @@ angular.module('coreBOSJSApp',
 		defaultLoadingValue: '' // ng-i18next option, *NOT* directly supported by i18next
 	};
 	}])
-	.run(function (Setup, $rootScope, corebosAPIKeys, coreBOSWSAPI, $location) {
+	.run(function (Setup, $rootScope, coreBOSAPIStatus, coreBOSWSAPI, $location) {
 		$rootScope.$on('$routeChangeStart', function (ev, next, curr) {
 		  if (next.$$route) {
-			if (!coreBOSWSAPI.isConfigured() || corebosAPIKeys.hasInvalidKeys()) {
+			if (!coreBOSWSAPI.isConfigured() || coreBOSAPIStatus.hasInvalidKeys()) {
 				$location.path('/config')
 			}
 		  }

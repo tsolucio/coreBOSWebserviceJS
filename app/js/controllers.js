@@ -45,7 +45,7 @@ angular.module('coreBOSJSApp.controllers', [])
 		return active;
 	};
 })
-.controller('configCtrl',function($scope, $i18next, $filter, coreBOSWSAPI, corebosAPIKeys) {
+.controller('configCtrl',function($scope, $i18next, $filter, coreBOSWSAPI, coreBOSAPIStatus) {
 	$scope.langs = [ {
 		name : i18n.t('English'),
 		code : 'en'
@@ -76,9 +76,9 @@ angular.module('coreBOSJSApp.controllers', [])
 		coreBOSWSAPI.setConfigured();
 	});
 	$scope.MarvelAPIConfigured = coreBOSWSAPI.isConfigured();
-	$scope.MarvelAPIKeys = corebosAPIKeys.hasInvalidKeys();
+	$scope.MarvelAPIKeys = coreBOSAPIStatus.hasInvalidKeys();
 })
-.controller('moduleCtrl',function($scope, $i18next, coreBOSWSAPI, corebosAPIKeys) {
+.controller('moduleCtrl',function($scope, $i18next, coreBOSWSAPI, coreBOSAPIStatus) {
 	$scope.myPageItemsCount = 0;
 	$scope.myItemsTotalCount = 0;
 	$scope.moduleList = [];
@@ -91,7 +91,7 @@ angular.module('coreBOSJSApp.controllers', [])
 			$scope.myItemsTotalCount = response.data.result[0].count;
 		});
 	},function() {
-		console.log('THEY wont let us IN!!! dl then',corebosAPIKeys.getSessionInfo());
+		console.log('THEY wont let us IN!!! dl then',coreBOSAPIStatus.getSessionInfo());
 	});
 	$scope.onServerSideItemsRequested = function(currentPage, pageItems, filterBy, filterByFields, orderBy, orderByReverse) {
 		var where = coreBOSWSAPI.getWhereCondition($scope.moduleList[0],filterBy, filterByFields, orderBy, orderByReverse);
@@ -111,7 +111,7 @@ angular.module('coreBOSJSApp.controllers', [])
 //	  console.log($scope.mySelectedItems);
 //	});
 })
-.controller('listtypesCtrl',function($scope, $i18next, $filter, coreBOSWSAPI, corebosAPIKeys) {
+.controller('listtypesCtrl',function($scope, $i18next, $filter, coreBOSWSAPI, coreBOSAPIStatus) {
 	$scope.listtypes = [];
 	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
 		coreBOSWSAPI.doListTypes().then(function(response) {
@@ -133,7 +133,7 @@ angular.module('coreBOSJSApp.controllers', [])
 		});
 	}
 })
-.controller('moduleviewCtrl',function($scope, $i18next, $routeParams, coreBOSWSAPI, corebosAPIKeys) {
+.controller('moduleviewCtrl',function($scope, $i18next, $routeParams, coreBOSWSAPI, coreBOSAPIStatus) {
 	$scope.modulefieldList = [{field:'',val:''}];
 	$scope.recordid = $routeParams.id;
 	coreBOSWSAPI.doLogin('admin','Lvx494dom78vMTjS').then(function() {
@@ -147,7 +147,7 @@ angular.module('coreBOSJSApp.controllers', [])
 		})
 	});
 })
-.controller('relationsCtrl',function($scope, $i18next, coreBOSWSAPI, corebosAPIKeys) {
+.controller('relationsCtrl',function($scope, $i18next, coreBOSWSAPI, coreBOSAPIStatus) {
 	$scope.pdodiscriminator = [
 		'ProductBundle', 'ProductParent', 'ProductLineInvoice', 'ProductLineSalesOrder', 'ProductLineQuote',
 		'ProductLineInvoiceOnly', 'ProductLineSalesOrderOnly', 'ProductLineQuoteOnly', 'ProductLineAll', 'ProductLineNone'
@@ -179,7 +179,7 @@ angular.module('coreBOSJSApp.controllers', [])
 		});
 	};
 })
-.controller('doinvokeCtrl',function($scope, $i18next, $filter, coreBOSWSAPI, corebosAPIKeys) {
+.controller('doinvokeCtrl',function($scope, $i18next, $filter, coreBOSWSAPI, coreBOSAPIStatus) {
 	$scope.invokemethod = '';
 	$scope.invokeparams = '{}';
 	$scope.invokeexamples = ['authenticateContact','getPortalUserInfo','gettranslation','getSearchResults'];

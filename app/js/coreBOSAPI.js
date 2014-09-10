@@ -2,7 +2,7 @@
 'use strict';
 angular.module('coreBOSAPIservice', [])
   .value('version', 'coreBOS2.1')
-  .factory('coreBOSWSAPI', function($http, md5, $filter, corebosAPIKeys) {
+  .factory('coreBOSWSAPI', function($http, md5, $filter, coreBOSAPIStatus) {
 
 		// Webservice access point
 		var _servicebase = 'webservice.php';
@@ -53,7 +53,7 @@ angular.module('coreBOSAPIservice', [])
 		}
 		corebosAPI.setURL = function(url) {
 			_serviceurl = getWebServiceURL(url);
-			corebosAPIKeys.setServiceURL(url); // to control invalid access
+			coreBOSAPIStatus.setServiceURL(url); // to control invalid access
 		}
 		corebosAPI.getURL = function() {
 			return _serviceurl;
@@ -147,7 +147,7 @@ angular.module('coreBOSAPIservice', [])
 			var reqtype = 'GET';
 			var getdata = {
 				'operation'    : 'query',
-				'sessionName'  : corebosAPIKeys.getSessionInfo()._sessionid,
+				'sessionName'  : coreBOSAPIStatus.getSessionInfo()._sessionid,
 				'query'        : query
 			};
 			return $http({
@@ -220,7 +220,7 @@ angular.module('coreBOSAPIservice', [])
 		corebosAPI.doListTypes = function() {
 			var getdata = {
 				'operation'    : 'listtypes',
-				'sessionName'  : corebosAPIKeys.getSessionInfo()._sessionid
+				'sessionName'  : coreBOSAPIStatus.getSessionInfo()._sessionid
 			};
 			return $http({
 				method : 'GET',
@@ -270,7 +270,7 @@ angular.module('coreBOSAPIservice', [])
 		corebosAPI.doDescribe = function(module) {
 			var getdata = {
 				'operation'    : 'describe',
-				'sessionName'  : corebosAPIKeys.getSessionInfo()._sessionid,
+				'sessionName'  : coreBOSAPIStatus.getSessionInfo()._sessionid,
 				'elementType'  : module
 			};
 			return $http({
@@ -286,7 +286,7 @@ angular.module('coreBOSAPIservice', [])
 		corebosAPI.doRetrieve = function(record) {
 			var getdata = {
 				'operation'    : 'retrieve',
-				'sessionName'  : corebosAPIKeys.getSessionInfo()._sessionid,
+				'sessionName'  : coreBOSAPIStatus.getSessionInfo()._sessionid,
 				'id'           : record
 			};
 			return $http({
@@ -307,7 +307,7 @@ angular.module('coreBOSAPIservice', [])
 
 			var senddata = {
 				'operation' : method,
-				'sessionName' : corebosAPIKeys.getSessionInfo()._sessionid
+				'sessionName' : coreBOSAPIStatus.getSessionInfo()._sessionid
 			};
 			senddata = angular.extend(senddata,params);
 			if (reqtype=='POST') {
@@ -330,7 +330,7 @@ angular.module('coreBOSAPIservice', [])
 			if (angular.isObject(queryParameters)) queryParameters = $filter('json')(queryParameters);
 			var senddata = {
 				'operation' : 'getRelatedRecords',
-				'sessionName' : corebosAPIKeys.getSessionInfo()._sessionid,
+				'sessionName' : coreBOSAPIStatus.getSessionInfo()._sessionid,
 				'id' : record,
 				'module' : module,
 				'relatedModule' : relatedModule,
@@ -352,7 +352,7 @@ angular.module('coreBOSAPIservice', [])
 			if (angular.isObject(with_these_ids)) with_these_ids = $filter('json')(with_these_ids);
 			var senddata = {
 				'operation' : 'SetRelation',
-				'sessionName' : corebosAPIKeys.getSessionInfo()._sessionid,
+				'sessionName' : coreBOSAPIStatus.getSessionInfo()._sessionid,
 				'relate_this_id' : relate_this_id,
 				'with_these_ids' : with_these_ids
 			};
@@ -366,7 +366,7 @@ angular.module('coreBOSAPIservice', [])
 		return corebosAPI;
 	}
 )
-.factory('corebosAPIKeys',function() {
+.factory('coreBOSAPIStatus',function() {
 	var sessioninfo = {};
 	var serviceurl = '';
 	var invalidKeys = true;
@@ -391,14 +391,14 @@ angular.module('coreBOSAPIservice', [])
 	}
 	return corebosAPIIK;
 })
-.factory('corebosAPIInterceptor',function($q, corebosAPIKeys, $location) {
+.factory('corebosAPIInterceptor',function($q, coreBOSAPIStatus, $location) {
 	return {
 		'response': function(response) {
-			if (response.config.url.indexOf(corebosAPIKeys.getServiceURL())!=-1) {
-				corebosAPIKeys.setInvalidKeys(false);
+			if (response.config.url.indexOf(coreBOSAPIStatus.getServiceURL())!=-1) {
+				coreBOSAPIStatus.setInvalidKeys(false);
 				if (response.config.data != undefined && response.config.data.operation == 'login') {
 					if (response.data.success) {  // we have a successful login > we have to save the session
-						corebosAPIKeys.setSessionInfo({
+						coreBOSAPIStatus.setSessionInfo({
 							_sessionid: response.data.result.sessionName,
 							_userid: response.data.result.userId
 						});
@@ -413,8 +413,8 @@ angular.module('coreBOSAPIservice', [])
 		},
 		'responseError': function (rejection) {
 			var status = rejection.status;
-			if ((status==401 || status==404) && rejection.config.url.indexOf(corebosAPIKeys.getServiceURL())!=-1) {
-				corebosAPIKeys.setInvalidKeys(true);
+			if ((status==401 || status==404) && rejection.config.url.indexOf(coreBOSAPIStatus.getServiceURL())!=-1) {
+				coreBOSAPIStatus.setInvalidKeys(true);
 			}
 			return  $q.reject(rejection);
 		}
