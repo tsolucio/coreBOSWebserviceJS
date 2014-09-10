@@ -17,7 +17,7 @@ angular.module('coreBOSJSApp.filters', [])
 })
 .filter("formatNameInfo", function() {
 	return function(label,name) {
-		return '<b>' + label + '<b><br>' + name;
+		return '<b>' + label + '</b><br>' + name;
 	};
 })
 .filter("formatFieldInfo", function() {
