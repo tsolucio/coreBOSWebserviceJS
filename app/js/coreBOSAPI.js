@@ -22,30 +22,30 @@ angular.module('coreBOSAPIservice', [])
 		
 		corebosAPI.setConfigured = function() {
 			apiConfigured = !(_servicekey=='' || _servicekey=='PUT YOUR USER ACCESS KEY HERE');
-		}
+		};
 		corebosAPI.setConfigured();
 		corebosAPI.isConfigured = function(newkey) {
 			return apiConfigured;
-		}
+		};
 		corebosAPI.setcoreBOSUser = function(newkey,dologin) {
 			dologin = typeof dologin !== 'undefined' ? dologin : false;
 			_serviceuser = newkey;
 			if (dologin)
 				corebosAPI.doLogin(corebosAPI.getcoreBOSUser(),corebosAPI.getcoreBOSKey()).then(function() {});
-		}
+		};
 		corebosAPI.getcoreBOSUser = function() {
 			return _serviceuser;
-		}
+		};
 		corebosAPI.setcoreBOSKey = function(newkey,dologin) {
 			dologin = typeof dologin !== 'undefined' ? dologin : false;
 			_servicekey = newkey;
 			corebosAPI.setConfigured();
 			if (dologin)
 				corebosAPI.doLogin(corebosAPI.getcoreBOSUser(),corebosAPI.getcoreBOSKey()).then(function() {});
-		}
+		};
 		corebosAPI.getcoreBOSKey = function() {
 			return _servicekey;
-		}
+		};
 		
 		// Get the URL for sending webservice request.
 		function getWebServiceURL(url) {
@@ -63,17 +63,17 @@ angular.module('coreBOSAPIservice', [])
 			coreBOSAPIStatus.setServiceURL(url); // to control invalid access
 			if (dologin)
 				corebosAPI.doLogin(corebosAPI.getcoreBOSUser(),corebosAPI.getcoreBOSKey()).then(function() {});
-		}
+		};
 		corebosAPI.getURL = function() {
 			return _serviceurl;
-		}
+		};
 		
 		// Last operation error information
 		var _lasterror  = false;
 		
 		corebosAPI.getlasterror = function() {
 			return corebosAPI._lasterror;
-		}
+		};
 		// Check if result has any error.
 		corebosAPI.hasError = function(resultdata) {
 			if (resultdata != null && resultdata['success'] == false) {
@@ -153,7 +153,6 @@ angular.module('coreBOSAPIservice', [])
 		corebosAPI.doQuery = function(query) {
 			if(query.indexOf(';') == -1) query += ';';
 
-			var reqtype = 'GET';
 			var getdata = {
 				'operation'    : 'query',
 				'sessionName'  : coreBOSAPIStatus.getSessionInfo()._sessionid,
@@ -199,7 +198,7 @@ angular.module('coreBOSAPIservice', [])
 				}
 			}
 			return where;
-		}
+		};
 
 		corebosAPI.getLimit = function(limit,offset) {
 			var limit_cond = '';
@@ -208,7 +207,7 @@ angular.module('coreBOSAPIservice', [])
 				limit_cond = ' limit '+ offset + ',' + limit + ' ';
 			}
 			return limit_cond;
-		}
+		};
 
 		/**
 		 * Get Result Column Names.
@@ -268,7 +267,7 @@ angular.module('coreBOSAPIservice', [])
 				});
 			}
 			if (SortResult) {
-				ltypes.sort(function(a, b) {return a.label.localeCompare(b.label);})
+				ltypes.sort(function(a, b) {return a.label.localeCompare(b.label);});
 			}
 			return ltypes;
 		};
@@ -382,22 +381,22 @@ angular.module('coreBOSAPIservice', [])
 	var corebosAPIIK = {};
 	corebosAPIIK.hasInvalidKeys = function() {
 		return this.invalidKeys;
-	}
+	};
 	corebosAPIIK.setInvalidKeys = function(ikey) {
 		this.invalidKeys = ikey;
-	}
+	};
 	corebosAPIIK.setServiceURL = function(srvurl) {
 		this.serviceurl = srvurl;
-	}
+	};
 	corebosAPIIK.getServiceURL = function() {
 		return this.serviceurl;
-	}
+	};
 	corebosAPIIK.setSessionInfo = function(sinfo) {
 		this.sessioninfo = sinfo;
-	}
+	};
 	corebosAPIIK.getSessionInfo = function() {
 		return this.sessioninfo;
-	}
+	};
 	return corebosAPIIK;
 })
 .factory('corebosAPIInterceptor',function($q, coreBOSAPIStatus, $location) {
@@ -414,7 +413,7 @@ angular.module('coreBOSAPIservice', [])
 					} else {  // unsuccessful login
 						response.status = 401;
 						response.statusText = response.data.error.code;
-						return $q.reject(response)
+						return $q.reject(response);
 					}
 				}
 			}
