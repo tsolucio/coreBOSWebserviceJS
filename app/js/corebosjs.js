@@ -52,9 +52,10 @@ angular.module('coreBOSJSApp',
 			}
 		  }
 		});
-		coreBOSWSAPI.setcoreBOSUser(Setup.corebosuser);
-		coreBOSWSAPI.setcoreBOSKey(Setup.corebosaccesskey);
+		//coreBOSWSAPI.setcoreBOSUser(Setup.corebosuser);
+		//coreBOSWSAPI.setcoreBOSKey(Setup.corebosaccesskey);
 		coreBOSWSAPI.setURL(Setup.corebosapi);
+		coreBOSWSAPI.doLogin(Setup.corebosuser,Setup.corebosaccesskey).then(function() {});
 		/*
 		TrNgGrid.tableCssClass = "tr-ng-grid table table-bordered table-hover";
 	    TrNgGrid.cellCssClass = "tr-ng-cell";

@@ -27,15 +27,21 @@ angular.module('coreBOSAPIservice', [])
 		corebosAPI.isConfigured = function(newkey) {
 			return apiConfigured;
 		}
-		corebosAPI.setcoreBOSUser = function(newkey) {
+		corebosAPI.setcoreBOSUser = function(newkey,dologin) {
+			dologin = typeof dologin !== 'undefined' ? dologin : false;
 			_serviceuser = newkey;
+			if (dologin)
+				corebosAPI.doLogin(corebosAPI.getcoreBOSUser(),corebosAPI.getcoreBOSKey()).then(function() {});
 		}
 		corebosAPI.getcoreBOSUser = function() {
 			return _serviceuser;
 		}
-		corebosAPI.setcoreBOSKey = function(newkey) {
+		corebosAPI.setcoreBOSKey = function(newkey,dologin) {
+			dologin = typeof dologin !== 'undefined' ? dologin : false;
 			_servicekey = newkey;
 			corebosAPI.setConfigured();
+			if (dologin)
+				corebosAPI.doLogin(corebosAPI.getcoreBOSUser(),corebosAPI.getcoreBOSKey()).then(function() {});
 		}
 		corebosAPI.getcoreBOSKey = function() {
 			return _servicekey;
@@ -51,9 +57,12 @@ angular.module('coreBOSAPIservice', [])
 			} // if not we suppose the URL is correct
 			return url;
 		}
-		corebosAPI.setURL = function(url) {
+		corebosAPI.setURL = function(url,dologin) {
+			dologin = typeof dologin !== 'undefined' ? dologin : false;
 			_serviceurl = getWebServiceURL(url);
 			coreBOSAPIStatus.setServiceURL(url); // to control invalid access
+			if (dologin)
+				corebosAPI.doLogin(corebosAPI.getcoreBOSUser(),corebosAPI.getcoreBOSKey()).then(function() {});
 		}
 		corebosAPI.getURL = function() {
 			return _serviceurl;
@@ -422,8 +431,5 @@ angular.module('coreBOSAPIservice', [])
 })
 .config(function($httpProvider) {
 	$httpProvider.interceptors.push('corebosAPIInterceptor');
-//	coreBOSWSAPI.setcoreBOSUser(Setup.corebosuser);
-//	coreBOSWSAPI.setcoreBOSKey(Setup.corebosaccesskey);
-//	coreBOSWSAPI.setURL(Setup.corebosapi);
 })
 ;
