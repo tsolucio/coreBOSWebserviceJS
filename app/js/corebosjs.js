@@ -48,7 +48,7 @@ angular.module('coreBOSJSApp',
 		$rootScope.$on('$routeChangeStart', function (ev, next, curr) {
 		  if (next.$$route) {
 			if (!coreBOSWSAPI.isConfigured() || coreBOSAPIStatus.hasInvalidKeys()) {
-				$location.path('/config')
+				$location.path('/config');
 			}
 		  }
 		});

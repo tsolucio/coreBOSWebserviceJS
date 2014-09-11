@@ -55,7 +55,7 @@ angular.module('coreBOSJSApp.controllers', [])
 	}];
 	$scope.changeLanguage = function (lng) {
 		$i18next.options.lng=lng.code;
-	}
+	};
 	var found = $filter('getById')($scope.langs, $i18next.options.lng, 'code');
 	if (found!=null) {
 		$scope.currentLang = found;
@@ -100,7 +100,7 @@ angular.module('coreBOSJSApp.controllers', [])
 		coreBOSWSAPI.doQuery('select count(*) from accounts' + where).then(function(response) {
 			$scope.myItemsTotalCount = response.data.result[0].count;
 		});
-	}
+	};
 //	$scope.mySelectedItems = [];
 //	$scope.$watch("mySelectedItems.length", function(newLength){
 //	  console.log($scope.mySelectedItems);
@@ -122,7 +122,7 @@ angular.module('coreBOSJSApp.controllers', [])
 			$scope.retrieveable = response.data.result.retrieveable;
 			$scope.modulefields = $filter('formatModuleFields')(response.data.result.fields);
 		});
-	}
+	};
 })
 .controller('moduleviewCtrl',function($scope, $i18next, $routeParams, coreBOSWSAPI, coreBOSAPIStatus) {
 	$scope.modulefieldList = [{field:'',val:''}];
@@ -205,7 +205,7 @@ angular.module('coreBOSJSApp.controllers', [])
 		coreBOSWSAPI.doInvoke($scope.invokemethod,$scope.invokeparams,$scope.invokeformat).then(function(response) {
 			$scope.invokeresult = response.data;
 		});
-	}
+	};
 	$scope.invokeresult = '';
 })
 ;
