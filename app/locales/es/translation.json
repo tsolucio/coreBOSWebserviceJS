@@ -14,5 +14,6 @@
 	"Promotion": "Promoción",
 	"PromotionDescription": "Mi empresa, <a href='http://www.tsolucio.com'>TSolucio</a>, y yo estamos disponibles para todo tipo de trabajos de programación y, especialmente para implementaciones de <a href='http://corebos.org'>coreBOS</a>. No dudes en ponerte en contacto con nosotros.",
 	"coreBOSKeyNotSet": "Las claves de acceso a coreBOS no están definidas! Debes establecerlas aquí o en el fichero setup.js para poder utilizar la aplicación. Puedes obtener tu juego de claves en la sección de Preferencias de la aplicación.",
-	"coreBOSAPIInvalidKeys": "Las clave de acceso a coreBOS parecen ser incorrectas ya que estamos obteniendo una respuesta No Autorizado. Revisa que estén bien y prueba de nuevo. Puedes obtener tu juego de claves en la sección de Preferencias de la aplicación."
+	"coreBOSAPIInvalidKeys": "Las clave de acceso a coreBOS parecen ser incorrectas ya que estamos obteniendo una respuesta No Autorizado. Revisa que estén bien y prueba de nuevo. Puedes obtener tu juego de claves en la sección de Preferencias de la aplicación.",
+	"website": "Web Site"
 }
