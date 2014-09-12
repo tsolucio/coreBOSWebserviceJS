@@ -13,8 +13,6 @@ angular.module('coreBOSAPIservice', [])
 		var _servicekey = false;
 
 		// Webservice login validity
-		var _servertime = false;
-		var _expiretime = false;
 		var _servicetoken=false;
 
 		var corebosAPI = {};
@@ -105,8 +103,8 @@ angular.module('coreBOSAPIservice', [])
 			if(corebosAPI.hasError(res.data) == false) {
 				var result = resobj['result'];
 				_servicetoken = result.token;
-				_servertime = result.serverTime;
-				_expiretime = result.expireTime;
+				coreBOSAPIStatus.setServerTime(result.serverTime);
+				coreBOSAPIStatus.setExpireTime(result.expireTime);
 			}
 		}
 
@@ -378,6 +376,10 @@ angular.module('coreBOSAPIservice', [])
 	var sessioninfo = {};
 	var serviceurl = '';
 	var invalidKeys = true;
+	var _servertime = 0;
+	var _expiretime = 0;
+	var _localservertime = 0;
+	var _localexpiretime = 0;
 	var corebosAPIIK = {};
 	corebosAPIIK.hasInvalidKeys = function() {
 		return this.invalidKeys;
@@ -396,6 +398,28 @@ angular.module('coreBOSAPIservice', [])
 	};
 	corebosAPIIK.getSessionInfo = function() {
 		return this.sessioninfo;
+	};
+	corebosAPIIK.setServerTime = function(srvt) {
+		this._servertime = srvt;
+		this._localservertime = Math.round(new Date().getTime() / 1000);
+	};
+	corebosAPIIK.getServerTime = function() {
+		return this._servertime;
+	};
+	corebosAPIIK.setExpireTime = function(expt) {
+		this._expiretime = expt;
+		var validtime = expt - this._servertime;
+		this._localexpiretime = this._localservertime + validtime;
+		console.log(this._servertime,validtime, expt,this._localexpiretime);
+	};
+	corebosAPIIK.getExpireTime = function() {
+		return this._expiretime;
+	};
+	corebosAPIIK.isLoggedIn = function() {
+		var nowtime = Math.round(new Date().getTime() / 1000);
+		var validspan = this._localexpiretime - nowtime;
+		console.log(this.sessioninfo, this._servertime,this._localservertime, this._localexpiretime,nowtime,validspan);
+		return (this.sessioninfo != {} && this._servertime && validspan > 0);
 	};
 	return corebosAPIIK;
 })
