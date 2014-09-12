@@ -23,5 +23,12 @@
 				<th field-name="refinfo" display-name="{{'Reference/Values' | i18next}}" style="width:30%"></th>
 			</tr>
 		</thead>
+		<tbody>
+		<td field-name="labelinfo" ng-bind-html="gridItem.labelinfo"></td>
+		<td field-name="fieldinfo" ng-bind-html="gridItem.fieldinfo"></td>
+		<td field-name="blockinfo" ng-bind-html="gridItem.blockinfo"></td>
+		<td field-name="typeinfo" ng-bind-html="gridItem.typeinfo"></td>
+		<td field-name="refinfo" ng-bind-html="gridItem.refinfo"></td>
+		</tbody>
 	</table>
 </div>
