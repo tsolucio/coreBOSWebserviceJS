@@ -114,11 +114,6 @@ angular.module('coreBOSJSApp.controllers', [])
 		$scope.selecttypes = ltypes;
 	});
 	$scope.changeModule = function() {
-		if (coreBOSAPIStatus.isLoggedIn()) {
-			console.log('IN');
-		} else {
-			console.log('OUT');
-		}
 		coreBOSWSAPI.doDescribe($scope.selmtypes).then(function(response) {
 			$scope.idPrefix = response.data.result.idPrefix;
 			$scope.createable = response.data.result.createable;

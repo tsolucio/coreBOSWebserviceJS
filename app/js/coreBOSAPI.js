@@ -410,15 +410,17 @@ angular.module('coreBOSAPIservice', [])
 		this._expiretime = expt;
 		var validtime = expt - this._servertime;
 		this._localexpiretime = this._localservertime + validtime;
-		console.log(this._servertime,validtime, expt,this._localexpiretime);
 	};
 	corebosAPIIK.getExpireTime = function() {
 		return this._expiretime;
 	};
 	corebosAPIIK.isLoggedIn = function() {
+		// this method is useless: coreBOS does not expire the session once it has been obtained
+		// we register the expiretime but it is only controlled during the login phase,
+		// after that you are free to use it as long as you want
+		// this method will return false when the expire time is up, but you will still be able to use the API
 		var nowtime = Math.round(new Date().getTime() / 1000);
 		var validspan = this._localexpiretime - nowtime;
-		console.log(this.sessioninfo, this._servertime,this._localservertime, this._localexpiretime,nowtime,validspan);
 		return (this.sessioninfo != {} && this._servertime && validspan > 0);
 	};
 	return corebosAPIIK;
