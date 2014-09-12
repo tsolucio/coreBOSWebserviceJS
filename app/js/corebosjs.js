@@ -3,7 +3,7 @@
 angular.module('coreBOSJSApp',
 	[ 'ngRoute', 'coreBOSJSApp.setup', 'ngSanitize', 'coreBOSJSApp.filters', 'coreBOSAPIservice',
 		'coreBOSJSApp.directives', 'coreBOSJSApp.controllers', 'angular-md5','ui.bootstrap',
-		'jm.i18next', 'trNgGrid'])
+		'jm.i18next', 'trNgGrid', 'xeditable'])
 	.config([ '$routeProvider', function($routeProvider) {
 		$routeProvider.when('/module/:id', {
 			templateUrl : 'partials/moduleview.html',
@@ -72,5 +72,8 @@ angular.module('coreBOSJSApp',
 	    TrNgGrid.rowSelectedCssClass = "active";
 	    TrNgGrid.footerCssClass = "tr-ng-grid-footer form-inline";
 	    */
+	})
+	.run(function(editableOptions) {
+		editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 	})
 ;
