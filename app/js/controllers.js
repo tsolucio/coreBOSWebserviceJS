@@ -62,9 +62,6 @@ angular.module('coreBOSJSApp.controllers', [])
 	} else {
 		$scope.currentLang = $scope.langs[0];
 	}
-	$scope.mvurlkey = coreBOSWSAPI.getURL() || Setup.corebosapi;
-	$scope.mvpublickey = coreBOSWSAPI.getcoreBOSUser() || Setup.corebosuser;
-	$scope.mvprivatekey = coreBOSWSAPI.getcoreBOSKey() || Setup.corebosaccesskey;
 	$scope.$watch("mvurlkey", function(newval, oldval){
 		coreBOSWSAPI.setURL(newval,true);
 	});
@@ -75,8 +72,11 @@ angular.module('coreBOSJSApp.controllers', [])
 		coreBOSWSAPI.setcoreBOSKey(newval,true);
 		coreBOSWSAPI.setConfigured();
 	});
-	$scope.MarvelAPIConfigured = coreBOSWSAPI.isConfigured();
-	$scope.MarvelAPIKeys = coreBOSAPIStatus.hasInvalidKeys();
+	$scope.mvurlkey = coreBOSWSAPI.getURL() || Setup.corebosapi;
+	$scope.mvpublickey = coreBOSWSAPI.getcoreBOSUser() || Setup.corebosuser;
+	$scope.mvprivatekey = coreBOSWSAPI.getcoreBOSKey() || Setup.corebosaccesskey;
+	$scope.cbAPIConfigured = coreBOSWSAPI;
+	$scope.cbAPIKeys = coreBOSAPIStatus;
 })
 .controller('moduleCtrl',function($scope, $i18next, coreBOSWSAPI, coreBOSAPIStatus) {
 	$scope.myPageItemsCount = 0;

@@ -19,7 +19,7 @@ angular.module('coreBOSAPIservice', [])
 		var apiConfigured = false;
 		
 		corebosAPI.setConfigured = function() {
-			apiConfigured = !(_servicekey=='' || _servicekey=='PUT YOUR USER ACCESS KEY HERE');
+			apiConfigured = !(_servicekey === false || _servicekey=='' || _servicekey=='PUT YOUR USER ACCESS KEY HERE');
 		};
 		corebosAPI.setConfigured();
 		corebosAPI.isConfigured = function(newkey) {
@@ -105,6 +105,7 @@ angular.module('coreBOSAPIservice', [])
 				_servicetoken = result.token;
 				coreBOSAPIStatus.setServerTime(result.serverTime);
 				coreBOSAPIStatus.setExpireTime(result.expireTime);
+				corebosAPI.setConfigured();
 			}
 		}
 
@@ -439,6 +440,7 @@ angular.module('coreBOSAPIservice', [])
 					} else {  // unsuccessful login
 						response.status = 401;
 						response.statusText = response.data.error.code;
+						coreBOSAPIStatus.setInvalidKeys(true);
 						return $q.reject(response);
 					}
 				}
