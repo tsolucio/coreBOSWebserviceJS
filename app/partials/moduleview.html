@@ -1,8 +1,15 @@
-<div id="view">
-	<h1>Module Details {{recordid}}</h1>
-	<div class="columns">
-		<ul>
-		<li ng-repeat="field in modulefieldList"><p><label>{{field.field}}</label>{{field.val}}</p></li>
-		</ul>
+<div id="modulecontent" ng-if="retrieveable">
+	<h1>{{modulename}} Details {{accountname}}</h1>
+	<div class="row" ng-repeat="row in modulefieldList">
+		<div ng-repeat="field in row">
+		  <div class="{{field.labelclass}}"><label>{{field.label}}</label></div>
+		  <div class="{{field.valclass}}"><a href="#" editable-text="field.val">{{field.val}}</a></div>
+		</div>
 	</div>
+	<button type="button" class="btn btn-default" ng-click="doCreate()" ng-show="createable">{{'Create' | i18next}}</button>
+	<button type="button" class="btn btn-default" ng-click="doSave(recordid)" ng-show="updateable">{{'Save' | i18next}}</button>
+	<button type="button" class="btn btn-default" ng-click="doDelete(recordid)" ng-show="deleteable">{{'Delete' | i18next}}</button>
+</div>
+<div id="modulenocontent" ng-if="!retrieveable">
+<h1>Module Details can not be retrieved</h1>
 </div>

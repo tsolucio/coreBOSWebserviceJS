@@ -56,7 +56,7 @@ angular.module('coreBOSJSApp.controllers', [])
 	$scope.changeLanguage = function (lng) {
 		$i18next.options.lng=lng.code;
 	};
-	var found = $filter('getById')($scope.langs, $i18next.options.lng, 'code');
+	var found = $filter('getArrayElementById')($scope.langs, $i18next.options.lng, 'code');
 	if (found!=null) {
 		$scope.currentLang = found;
 	} else {
@@ -124,16 +124,45 @@ angular.module('coreBOSJSApp.controllers', [])
 		});
 	};
 })
-.controller('moduleviewCtrl',function($scope, $i18next, $routeParams, coreBOSWSAPI, coreBOSAPIStatus) {
+.controller('moduleviewCtrl',function($scope, $i18next, $routeParams, $filter, coreBOSWSAPI, coreBOSAPIStatus) {
 	$scope.modulefieldList = [{field:'',val:''}];
 	$scope.recordid = $routeParams.id;
-	coreBOSWSAPI.doRetrieve($routeParams.id).then(function(response) {
-		var flds = [];
-		angular.forEach(response.data.result, function(value, key) {
-			var fld = {field:key,val:value};
-			flds.push(fld);
-		});
-		$scope.modulefieldList = flds;
+	coreBOSWSAPI.doDescribe('Accounts').then(function(response) {
+		$scope.idPrefix = response.data.result.idPrefix;
+		$scope.createable = response.data.result.createable;
+		$scope.updateable = response.data.result.updateable;
+		$scope.deleteable = response.data.result.deleteable;
+		$scope.retrieveable = response.data.result.retrieveable;
+		$scope.modulename = response.data.result.name;
+		$scope.modulefields = response.data.result.fields;
+		console.log(response);
+		if ($scope.retrieveable) {
+			coreBOSWSAPI.doRetrieve($routeParams.id).then(function(response) {
+				var flds = [], cols = [];
+				var numcols = 3;
+				var lblclass = 'col-md-2', vlclass = 'col-md-2';
+				console.log(response);
+				angular.forEach(response.data.result, function(value, key) {
+					var found = $filter('getArrayElementById')($scope.modulefields, key, 'name');
+					if (found!=null) {
+						var lbl = found.label;
+					} else {
+						var lbl = '';
+					}
+					if (key=='accountname') {
+						$scope.accountname = value;
+					}
+					var fld = {label:lbl,labelclass:lblclass,field:key,val:value,valclass:vlclass};
+					cols.push(fld);
+					if (cols.length == numcols) {
+						flds.push(cols);
+						cols = [];
+					}
+				});
+				flds.push(cols);
+				$scope.modulefieldList = flds;
+			});
+		}
 	});
 })
 .controller('relationsCtrl',function($scope, $i18next, coreBOSWSAPI, coreBOSAPIStatus) {
