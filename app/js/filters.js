@@ -3,7 +3,7 @@
 /* Filters */
 
 angular.module('coreBOSJSApp.filters', [])
-.filter('getById', function() {
+.filter('getArrayElementById', function() {
 	return function(input, idvalue, idprop) {
 		if (idprop===undefined) idprop='id';
 		var i = 0, len = input.length;
