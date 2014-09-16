@@ -127,6 +127,10 @@ angular.module('coreBOSJSApp.controllers', [])
 .controller('moduleviewCtrl',function($scope, $i18next, $routeParams, $filter, coreBOSWSAPI, coreBOSAPIStatus) {
 	$scope.modulefieldList = [{field:'',val:''}];
 	$scope.recordid = $routeParams.id;
+	$scope.account = {};
+	$scope.getModuleValue = function(field) {
+		return $scope.account[field];
+	};
 	coreBOSWSAPI.doDescribe('Accounts').then(function(response) {
 		$scope.idPrefix = response.data.result.idPrefix;
 		$scope.createable = response.data.result.createable;
@@ -135,12 +139,21 @@ angular.module('coreBOSJSApp.controllers', [])
 		$scope.retrieveable = response.data.result.retrieveable;
 		$scope.modulename = response.data.result.name;
 		$scope.modulefields = response.data.result.fields;
-		console.log(response);
 		if ($scope.retrieveable) {
 			$scope.saveAccountModule = function() {
-				console.log($scope.account,$scope.field);
-				return true;
-				//return coreBOSWSAPI.doUpdate();
+				coreBOSWSAPI.doUpdate('Accounts',$scope.account).then(function(response) {
+					console.log('update:',response);
+				});
+			};
+			$scope.doCreate = function() {
+				coreBOSWSAPI.doCreate('Accounts',$scope.account).then(function(response) {
+					console.log('create:',response);
+				});
+			};
+			$scope.doDelete = function() {
+				coreBOSWSAPI.doDelete($scope.account.id).then(function(response) {
+					console.log('delete:',response);
+				});
 			};
 			coreBOSWSAPI.doQuery('select accountname from accounts').then(function(response) {
 				var aarray = [];
@@ -161,7 +174,6 @@ angular.module('coreBOSJSApp.controllers', [])
 				var account = {};
 				var numcols = 3;
 				var lblclass = 'col-md-2', vlclass = 'col-md-2';
-				console.log(response);
 				angular.forEach(response.data.result, function(value, key) {
 					var found = $filter('getArrayElementById')($scope.modulefields, key, 'name');
 					if (key=='accountname') {

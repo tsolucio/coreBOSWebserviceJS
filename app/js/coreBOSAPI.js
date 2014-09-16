@@ -304,6 +304,64 @@ angular.module('coreBOSAPIservice', [])
 		};
 
 		/**
+		 * Do Create Operation
+		 */
+		corebosAPI.doCreate = function(module, valuemap) {
+			// Assign record to logged in user if not specified
+			if(valuemap['assigned_user_id'] == null) {
+				valuemap['assigned_user_id'] = coreBOSAPIStatus.getSessionInfo()._userid;
+			}
+			var postdata = {
+				'operation'    : 'create',
+				'sessionName'  : coreBOSAPIStatus.getSessionInfo()._sessionid,
+				'elementType'  : module,
+				'element'      : angular.toJson(valuemap)
+			};
+			return $http({
+				method : 'POST',
+				url : _serviceurl,
+				data: postdata
+			});
+		};
+
+		/**
+		 * Do Update Operation
+		 */
+		corebosAPI.doUpdate = function(module, valuemap) {
+			// Assign record to logged in user if not specified
+			if(valuemap['assigned_user_id'] == null) {
+				valuemap['assigned_user_id'] = coreBOSAPIStatus.getSessionInfo()._userid;
+			}
+			var postdata = {
+				'operation'    : 'update',
+				'sessionName'  : coreBOSAPIStatus.getSessionInfo()._sessionid,
+				'elementType'  : module,
+				'element'      : angular.toJson(valuemap)
+			};
+			return $http({
+				method : 'POST',
+				url : _serviceurl,
+				data: postdata
+			});
+		};
+
+		/**
+		 * Do Delete Operation
+		 */
+		corebosAPI.doDelete = function(recordid) {
+			var postdata = {
+				'operation'    : 'delete',
+				'sessionName'  : coreBOSAPIStatus.getSessionInfo()._sessionid,
+				'id'           : recordid
+			};
+			return $http({
+				method : 'POST',
+				url : _serviceurl,
+				data: postdata
+			});
+		};
+
+		/**
 		 * Invoke custom operation
 		 */
 		corebosAPI.doInvoke = function(method, params, type) {
