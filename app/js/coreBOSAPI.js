@@ -2,7 +2,7 @@
 'use strict';
 angular.module('coreBOSAPIservice', [])
   .value('version', 'coreBOS2.1')
-  .factory('coreBOSWSAPI', function($http, md5, $filter, coreBOSAPIStatus) {
+  .factory('coreBOSWSAPI', function($http, md5, coreBOSAPIStatus) {
 
 		// Webservice access point
 		var _servicebase = 'webservice.php';
@@ -392,7 +392,7 @@ angular.module('coreBOSAPIservice', [])
 		 * Retrieve related records.
 		 */
 		corebosAPI.doGetRelatedRecords = function(record, module, relatedModule, queryParameters) {
-			if (angular.isObject(queryParameters)) queryParameters = $filter('json')(queryParameters);
+			if (angular.isObject(queryParameters)) queryParameters = angular.toJson(queryParameters);
 			var senddata = {
 				'operation' : 'getRelatedRecords',
 				'sessionName' : coreBOSAPIStatus.getSessionInfo()._sessionid,
@@ -414,7 +414,7 @@ angular.module('coreBOSAPIservice', [])
 		 * param with_this_ids string/array either a string with one unique ID or an array of IDs to relate to the first parameter
 		 */
 		corebosAPI.doSetRelated = function(relate_this_id, with_these_ids) {
-			if (angular.isObject(with_these_ids)) with_these_ids = $filter('json')(with_these_ids);
+			if (angular.isObject(with_these_ids)) with_these_ids = angular.toJson(with_these_ids);
 			var senddata = {
 				'operation' : 'SetRelation',
 				'sessionName' : coreBOSAPIStatus.getSessionInfo()._sessionid,
