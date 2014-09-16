@@ -222,6 +222,7 @@ angular.module('coreBOSJSApp.controllers', [])
 		$scope.selecttypes = ltypes;
 	});
 	$scope.sendgrelCall = function() {
+		$scope.grelresult = "";
 		var queryParameters = {};
 		if (!angular.isUndefined($scope.rpdodisc)) queryParameters.productDiscriminator = $scope.rpdodisc;
 		if (!angular.isUndefined($scope.glimit)) queryParameters.limit = $scope.glimit;
@@ -233,6 +234,7 @@ angular.module('coreBOSJSApp.controllers', [])
 		});
 	};
 	$scope.sendsrelCall = function() {
+		$scope.srelresult = "";
 		coreBOSWSAPI.doSetRelated($scope.srelrecord,$scope.srelwith).then(function(response) {
 			$scope.srelresult = response.data;
 		});
