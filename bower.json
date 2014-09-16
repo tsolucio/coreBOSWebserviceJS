@@ -22,6 +22,6 @@
     "angular-ui-bootstrap": "~0.11.0",
     "RWD-Table-Patterns": "~5.0.4",
     "angular-xeditable": "~0.1.8",
-    "coreBOSWSAPIJS": "https://github.com/tsolucio/coreBOSWSAPIJS.git"
+    "coreboswsapijs": "*"
   }
 }
