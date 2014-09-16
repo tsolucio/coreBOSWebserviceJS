@@ -2,8 +2,8 @@
 
 angular.module('coreBOSJSApp',
 	[ 'ngRoute', 'coreBOSJSApp.setup', 'ngSanitize', 'coreBOSJSApp.filters', 'coreBOSAPIservice',
-		'coreBOSJSApp.directives', 'coreBOSJSApp.controllers', 'angular-md5','ui.bootstrap',
-		'jm.i18next', 'trNgGrid', 'xeditable'])
+		'coreBOSJSApp.directives', 'coreBOSJSApp.controllers', 'angular-md5', 'xeditable','ui.bootstrap',
+		'jm.i18next', 'trNgGrid'])
 	.config([ '$routeProvider', function($routeProvider) {
 		$routeProvider.when('/module/:id', {
 			templateUrl : 'partials/moduleview.html',

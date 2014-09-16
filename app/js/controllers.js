@@ -137,22 +137,56 @@ angular.module('coreBOSJSApp.controllers', [])
 		$scope.modulefields = response.data.result.fields;
 		console.log(response);
 		if ($scope.retrieveable) {
+			$scope.saveAccountModule = function() {
+				console.log($scope.account,$scope.field);
+				return true;
+				//return coreBOSWSAPI.doUpdate();
+			};
+			coreBOSWSAPI.doQuery('select accountname from accounts').then(function(response) {
+				var aarray = [];
+				angular.forEach(response.data.result, function(value, key) {
+					aarray.push(value.accountname + ' (' + value.id + ')');
+				});
+				$scope.accs = aarray;
+			});
+			coreBOSWSAPI.doQuery('select first_name,last_name from users').then(function(response) {
+				var uarray = [];
+				angular.forEach(response.data.result, function(value, key) {
+					uarray.push(value.first_name + ' ' + value.last_name + ' (' + value.id + ')');
+				});
+				$scope.usrs = uarray;
+			});
 			coreBOSWSAPI.doRetrieve($routeParams.id).then(function(response) {
 				var flds = [], cols = [];
+				var account = {};
 				var numcols = 3;
 				var lblclass = 'col-md-2', vlclass = 'col-md-2';
 				console.log(response);
 				angular.forEach(response.data.result, function(value, key) {
 					var found = $filter('getArrayElementById')($scope.modulefields, key, 'name');
-					if (found!=null) {
-						var lbl = found.label;
-					} else {
-						var lbl = '';
-					}
 					if (key=='accountname') {
 						$scope.accountname = value;
 					}
-					var fld = {label:lbl,labelclass:lblclass,field:key,val:value,valclass:vlclass};
+					var fld = {
+						label:found.label,
+						labelclass:lblclass,
+						field:key,
+						val: value == '' ? 'none' : value,
+						valclass:vlclass,
+						uitype: found.uitype,
+						type: found.type.name
+					};
+					account[key] = value;
+					if (found.type.name == 'reference') {
+						
+					}
+					if (found.type.name == 'picklist') {
+						var pl = {
+							defaultValue: found.type.defaultValue,
+							picklistValues: found.type.picklistValues
+						};
+						angular.extend(fld,pl);
+					}
 					cols.push(fld);
 					if (cols.length == numcols) {
 						flds.push(cols);
@@ -161,6 +195,7 @@ angular.module('coreBOSJSApp.controllers', [])
 				});
 				flds.push(cols);
 				$scope.modulefieldList = flds;
+				$scope.account = account;
 			});
 		}
 	});
